@@ -53,6 +53,29 @@ public class PTfirstAssignment {
         }
     }
 
+    static void decreasePredecessorCount(TsList element) {
+        while (element != null) {
+            predCount[element.value - 1]--;
+            if (predCount[element.value - 1] == 0) {
+                bag[++bagEnd] = element.value;
+            }
+            element = element.next;
+        }
+    }
+
+    private static void increasePredecessorCount(TsList element) {
+        while (element != null) {
+            predCount[element.value - 1]++;
+            if (predCount[element.value - 1] == 0) {
+                bag[++bagEnd] = element.value;
+            }
+            element = element.next;
+        }
+    }
+
+
+    /*
+     */
     public static void readDataAndInitialize(String dataLocation) throws FileNotFoundException, IOException {
         BufferedReader reader = new BufferedReader(new FileReader(dataLocation));
         String line = null;
@@ -111,6 +134,9 @@ public class PTfirstAssignment {
         }
     }
 
+    /*
+    
+     */
     public static void topsorts() {
         if (bagNotEmpty()) {
             System.out.println("Bag is not empty.");
@@ -126,43 +152,49 @@ public class PTfirstAssignment {
                 //         the Bag
                 System.out.println("Decreasing predCount of " + lastAdded + "'s successors by one.");
                 if (successors[lastAdded - 1] != null) {
-                    successors[lastAdded - 1].decreasePredecessorCount(predCount);
+//                    successors[lastAdded - 1].decreasePredecessorCount(predCount);
+                    decreasePredecessorCount(successors[lastAdded - 1]);
                 }
 
-                for (int k = 0; k < predCount.length; k++) {
-                    if (predCount[k] == 0) {
-                        if (!bagNotEmpty()) {
-                            bagStart = 0;
-                            bagEnd = 0;
-                            bag[bagStart] = k + 1;
-                        } else {
-                            bag[++bagEnd] = k + 1;
-                        }
-                        predCount[k] = -1; // A sta ako bas to necu?
-                    }
-                }
+//                for (int k = 0; k < predCount.length; k++) {
+//                    if (predCount[k] == 0) {
+//                        if (!bagNotEmpty()) {
+//                            bagStart = 0;
+//                            bagEnd = 0;
+//                            bag[bagStart] = k + 1;
+//                        } else {
+//                            bag[++bagEnd] = k + 1;
+//                        }
+//                        predCount[k] = -1; // A sta ako bas to necu?
+//                    }
+//                }
             }
 
             System.out.println("Recursive call");
             topsorts();
-            
-            
-            
-            //         Reverse the above
-            
-                
-                //         traverse its succ list, reduce the pred count for 
-                //         each successor, and if it goes to zero, put it in 
-                //         the Bag
 
-            
-                //         Take it out of the Bag, put it in the output array,
+            for (int i = output.length - 1; i >= 0; i--) {
+                int lastAdded = output[i] + 1;
+                if (successors[lastAdded - 1] != null) {
+                    increasePredecessorCount(successors[lastAdded - 1]);
+                }
+
+                bag[++bagEnd] = lastAdded;
+                
+                
+            }
+
+            //         Reverse the above
+            //         traverse its succ list, reduce the pred count for 
+            //         each successor, and if it goes to zero, put it in 
+            //         the Bag
+            //         Take it out of the Bag, put it in the output array,
         } else {
             System.out.println("Bag is empty.");
             //      Output the output array
             if (printNo < 50) {
                 for (int i = 0; i < output.length; i++) {
-                    System.out.println(output[i]);
+                    System.out.print(output[i] + " ");
                     printNo++;
                 }
             }
@@ -176,7 +208,7 @@ public class PTfirstAssignment {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         System.out.println("######## READING DATA ########\n");
-        readDataAndInitialize("C:\\Users\\gligo_000\\Desktop\\Temple\\Programming Techniques\\Topological Sort\\Assign1input1");
+        readDataAndInitialize("src/data/Assign1input1");
 
         System.out.println("######## LOADING DATA ########\n");
 

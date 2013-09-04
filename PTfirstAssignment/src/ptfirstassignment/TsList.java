@@ -1,5 +1,8 @@
 package ptfirstassignment;
 
+import static ptfirstassignment.PTfirstAssignment.bag;
+import static ptfirstassignment.PTfirstAssignment.bagEnd;
+
 /**
  *
  * @author Djordje Gligorijevic
@@ -76,6 +79,9 @@ public class TsList {
         TsList element = this;
         while (element != null) {
             predCount[element.value - 1]--;
+            if(predCount[element.value - 1] == 0){
+                bag[++bagEnd] = element.value;
+            }
             element = element.next;
         }
     }
