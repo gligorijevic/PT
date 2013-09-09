@@ -1,16 +1,13 @@
 package ptfirstassignment;
 
-import static ptfirstassignment.PTfirstAssignment.bag;
-import static ptfirstassignment.PTfirstAssignment.bagEnd;
-
 /**
  *
  * @author Djordje Gligorijevic
  */
 public class TsList {
 
-    int value;
-    TsList next;
+    private int value;
+    private TsList next;
 
     public TsList() {
     }
@@ -20,70 +17,63 @@ public class TsList {
         this.next = next;
     }
 
-    public void setNext(TsList next) {
-        this.next = next;
+    /**
+     *
+     * Adds new parameter to the end of the list. Since this method traverses
+     * through entire list to add element at the end, execution time of this
+     * method is not constant (depends on number of elements).
+     *
+     *
+     * @param tl new parameter to add in list
+     */
+    public void addLast(TsList tl) {
+        TsList element = this;
+        while (element != null) {
+            if (element.getNext() == null) {
+                element.setNext(tl);
+                return;
+            }
+            element = element.getNext();
+        }
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    /**
+     * Adds new parameter the list at the second position. Execution time of
+     * this method is constant.
+     *
+     * @param tl new parameter to add in list
+     */
+    public void addSecond(TsList tl) {
+        tl.setNext(this.getNext());
+        this.setNext(tl);
     }
 
+    /**
+     * @return the value
+     */
     public int getValue() {
         return value;
     }
 
+    /**
+     * @param value the value to set
+     */
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    /**
+     * @return the next
+     */
     public TsList getNext() {
         return next;
     }
 
-    public void addLast(TsList tl) {
-        TsList element = this;
-        if (element.next == null) {
-            element.next = tl;
-        } else {
-            while (element.next != null) {
-                if (element.next == null) {
-                    element.next = tl;
-                }
-                element = element.next;
-            }
-        }
-    }
-
-//    public void removeElement(int e) {
-//        //TODO check
-//        TsList element = this;
-//        while (element != null) {
-//            if (element.value == e) {
-//                if (element.next == null) {
-//                    element.next = element.next.next;
-//                } else {
-//                    element.next = null;
-//                }
-//            }
-//            element = element.next;
-//        }
-//    }
-    boolean hasSuccessor(int lastAdded) {
-        TsList element = this;
-        while (element != null) {
-            if (element.value == lastAdded) {
-                return true;
-            }
-            element = element.next;
-        }
-        return false;
-    }
-
-    void decreasePredecessorCount(int[] predCount) {
-        TsList element = this;
-        while (element != null) {
-            predCount[element.value - 1]--;
-            if(predCount[element.value - 1] == 0){
-                bag[++bagEnd] = element.value;
-            }
-            element = element.next;
-        }
+    /**
+     * @param next the next to set
+     */
+    public void setNext(TsList next) {
+        this.next = next;
     }
 
 }
