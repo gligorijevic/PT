@@ -184,7 +184,7 @@ public class PTfirstAssignment {
             try {
                 //      Output the output array
                 PrintWriter out = null;
-                out = new PrintWriter(new BufferedWriter(new FileWriter(("src/data/result9"), true)));
+                out = new PrintWriter(new BufferedWriter(new FileWriter(("src/data/result11"), true)));
                 if (printNo < 50) {
                     out.print(printNo + " : ");
                     for (int i = 0; i < output.length; i++) {
@@ -208,7 +208,7 @@ public class PTfirstAssignment {
      * @throws java.io.FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        readDataAndInitialize("src/data/Assign1input9");
+        readDataAndInitialize("src/data/Assign1input11");
 
 //        System.out.println("Number of elements: " + output.length);
 //        for (int i = 0; i < predCount.length; i++) {
@@ -233,7 +233,7 @@ public class PTfirstAssignment {
 //        }
         topsorts();
         PrintWriter out = null;
-        out = new PrintWriter(new BufferedWriter(new FileWriter(("src/data/result9"), true)));
+        out = new PrintWriter(new BufferedWriter(new FileWriter(("src/data/result11"), true)));
         out.write("There are " + topsortsNo + " topsorts.");
         out.flush();
         out.close();
