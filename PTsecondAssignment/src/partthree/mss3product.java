@@ -5,76 +5,130 @@
  */
 package partthree;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 /**
  *
  * @author Djordje Gligorijevic
  */
 public class mss3product {
 
-    public static void mss4product(int[] a, int par1, int par2) {
-        int maxprod = 0;
-        int maxprod_final = 0;
-        int neg_prod = 1;
-        int prod = 1;
-        int k = par1;
-        int k_rev = 0;
-        int maxprod_rev = 0;
-        int neg_prod_rev = 1;
-        int prod_rev = 1;
+    static int hack = 0;
 
-        while (k <= par2) {
-            if (a[k] > 0) {
-                prod = prod * a[k];
-                if (prod > maxprod) {
-                    maxprod = prod;
-                }
-            } else if (a[k] == 0) {
-                prod = 1;
-                neg_prod = 1;
-            } else if (a[k] < 0) {
-                prod = prod * a[k];
-                neg_prod = neg_prod * prod;
-                prod = neg_prod;
-                if (prod > maxprod) {
-                    maxprod = prod;
-                    neg_prod = 1;
+    /**
+     * This method returns maximum subsequence product for all subsequences that
+     * start and end before n (starting from 0).
+     *
+     * @param a input array representing a sequence from which we look for
+     * maximum subsequence product
+     * @param p1 first element of the part of the sequence we are looking
+     * @param p2 last element of the part of the sequence we are looking
+     * @return Maximum subsequence product for all subsequences that start and
+     * end before n
+     */
+    public static int mss3product(int[] a, int p1, int p2) {
+        int maxProduct;
+        int maxPositiveProduct;
+        int maxNegativeProduct;
+        if (p1 == p2) {
+            System.out.println("bla" + a[p1]);
+            if (a[p1] > 0) {
+                hack = 1;
+                maxPositiveProduct = a[p1];
+                maxProduct = maxPositiveProduct;
+            } else {
+                maxNegativeProduct = a[p1];
+                maxProduct = 0;
+            }
+        } else {
+            int m = (p1 + p2) / 2;
+            System.out.println(m);
+            int L = mss3product(a, p1, m);
+            int R = mss3product(a, m + 1, p2);
+            int productLt = 1;
+            int productRt = 1;
+            int maxPositiveProdLt = 1;
+            int maxPositiveProdRt = 1;
+            int maxNegativeProdLt = 1;
+            int maxNegativeProdRt = 1;
+
+            for (int i = m; i >= p1; i--) {
+                productLt = productLt * a[i];
+                if (productLt > 0) {
+                    if (productLt > maxPositiveProdLt) {
+                        maxPositiveProdLt = productLt;
+                    }
                 } else {
-                    prod = 1;
+                    if (productLt < maxNegativeProdLt) {
+                        maxNegativeProdLt = productLt;
+                    }
                 }
             }
-            k_rev = par2 - k + par1;
-            if (a[k_rev] > 0) {
-                prod_rev = prod_rev * a[k];
-                if (prod_rev > maxprod_rev) {
-                    maxprod_rev = prod_rev;
-                }
-            } else if (a[k_rev] == 0) {
-                prod_rev = 1;
-                neg_prod_rev = 1;
-            } else if (a[k_rev] < 0) {
-                prod_rev = prod_rev * a[k_rev];
-                neg_prod_rev = neg_prod_rev * prod_rev;
-                prod_rev = neg_prod_rev;
-                if (prod_rev > maxprod_rev) {
-                    maxprod_rev = prod_rev;
-                    neg_prod_rev = 1;
+            for (int i = m + 1; i <= p2; i++) {
+                productRt = productRt * a[i];
+                if (productRt > 0) {
+                    if (productRt > maxPositiveProdRt) {
+                        maxPositiveProdRt = productRt;
+                    }
                 } else {
-                    prod_rev = 1;
+                    if (productRt < maxNegativeProdRt) {
+                        maxNegativeProdRt = productRt;
+                    }
                 }
-
             }
-            k++;
+            maxPositiveProduct = maxPositiveProdLt * maxPositiveProdRt;
+            maxNegativeProduct = maxNegativeProdLt * maxNegativeProdRt;
+            int M = Math.max(maxPositiveProduct, maxNegativeProduct);
+            maxProduct = Math.max(Math.max(L, R), M);
         }
-        maxprod_final = Math.max(maxprod_rev, maxprod);
-        System.out.println("For the numbers you have entered: ");
-        for (int i = 0; i < par2; i++) {
-            System.out.print(a[i] + " ");
+        if (hack == 0) {
+            return 0;
+        } else {
+            return maxProduct;
         }
-        System.out.println("\n");
-        System.out.println("The maximum product is maxprod = " + maxprod_final);
     }
 
-    
-    
-    
+    public static void main(String[] args) throws IOException {
+        int n = 10;
+        int i = 0;
+        int x = 0;
+        Integer first = 0;
+        Integer last = 0;
+        int maximum = 0;
+        int a[] = new int[n];
+//        BufferedReader reader = new BufferedReader(
+//                new InputStreamReader(System.in));
+
+//        System.out.println("Enter values for the sequence");
+//        for (int j = 0; j < n; j++) {
+//            x = Integer.parseInt(reader.readLine());
+//            a[j] = x;
+//        }
+//        a = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        PrintWriter out = null;
+        String newFilename = "src/partthree/results/result1.txt";
+        out = new PrintWriter(new BufferedWriter(new FileWriter(newFilename, true)));
+
+        a = new int[]{1, -1, 2, -2, 3, -3, 4, -4, 5, -5};
+//        a = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        maximum = mss3product(a, 0, a.length - 1);
+
+        System.out.println("input sequence is: ");
+        out.print("input sequence is: ");
+        for (int j = 0; j < a.length; j++) {
+            System.out.print(a[j] + " ");
+            out.print(a[j] + " ");
+        }
+        out.print("\n");
+        System.out.println("Maximum sum of all integers in any subsequence "
+                + "of consecutive integers is: " + maximum + "\n");
+        out.print("Maximum sum of all integers in any subsequence "
+                + "of consecutive integers is: " + maximum + "\n");
+        out.flush();
+        out.close();
+    }
+
 }

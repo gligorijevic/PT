@@ -1,0 +1,2 @@
+input sequence is: 1 -1 2 -2 3 -3 4 -4 5 -5 
+Maximum product of all integers in any subsequence of consecutive integers is: 14400

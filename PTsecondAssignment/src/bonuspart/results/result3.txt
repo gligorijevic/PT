@@ -1,0 +1,2 @@
+input sequence is: 0 0 0 0 0 0 0 0 0 0 
+Maximum product of all integers in any subsequence of consecutive integers is: 0

@@ -1,0 +1,4 @@
+input sequence is: 1 1 1 1 1 1 1 -8 6 7 
+Maximum sum of all integers in any subsequence of consecutive integers is: 13
+
+Positions of the first and last element in subsequence with the max sum are respectively: 8 9
