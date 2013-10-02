@@ -165,12 +165,8 @@ public class HandSimulation {
         System.out.println("Top od K je sada " + top[K]);
         //Set i to 2.*/
         for (int i = 1; i < N + 1; i++) {//While i < N 
-            System.out.println("POCINJE POMERANJE--" + i + " nova baza je " + newBase[i] + " a stara je " + base[i]);
             if (newBase[i] < base[i]) {
-                System.out.println("U levo");
-                System.out.println("Nova baza je manja" + newBase[i]);
                 int moveAmount = base[i] - newBase[i];
-                System.out.println("Treba pomeriti bazu i=" + i + " za move " + moveAmount);
                 for (int h = base[i] + 1; h <= top[i]; h++) {
                     noMovements++;
                     if (!p70) {
