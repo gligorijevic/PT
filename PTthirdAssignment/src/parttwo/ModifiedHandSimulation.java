@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package partone;
+package parttwo;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  *
  * @author Djordje Gligorijevic
  */
-public class GarwickAlgorithm {
+public class ModifiedHandSimulation {
 
     /**
      * Global variables
@@ -60,8 +60,13 @@ public class GarwickAlgorithm {
         alloc = new double[N];
         delta = new int[N];
         int length = nOFMemoryLocations / nOfStacks; //100
-        for (int i = 0; i < N; i++) {
+        for (int i = 2; i < N; i++) {
             stack[i] = length;
+            if (i % 2 == 0) {
+                top[i] = oldTop[i] = base[i] = i * length;
+                top[i - 1] = oldTop[i - 1] = i * length + 1;
+                base[i - 1] = i * length;
+            }
             top[i] = oldTop[i] = base[i] = (i) * length;
         }
         base[N] = nOFMemoryLocations;
@@ -69,37 +74,37 @@ public class GarwickAlgorithm {
         REM = tableMax - tableBase - totalSpaceUsed;
     }
 
-    /**
-     *
-     * @throws Exception
-     */
     public static void garwick() throws Exception {
         totalSpaceUsed = 0;
         totalIncrease = 0;
         for (int i = 0; i < N; i++) {
-            stack[i] = top[i] - base[i];
+            if (i % 2 == 0) { //starting from 0
+                stack[i] = top[i] - base[i];
+            } else {
+                stack[i] = base[i] - top[i] + 1;
+            }
             if (stack[i] < 0) {
                 stack[i] = 0;
             }
             System.out.println("Stack " + i + " has length of: " + stack[i]);
-            System.out.println("TOP is " + top[i] + " ,and base is " + base[i]);
-        }
-
-        for (int i = 0; i < N; i++) {
-            if (top[i] > oldTop[i]) {
+            System.out.println("TOP is " + top[i] + " ,and his base is: " + base[i]);
+            totalSpaceUsed += stack[i];
+            if (i % 2 == 0) {// starting from 0
                 increase[i] = top[i] - oldTop[i];
             } else {
+                System.out.println("Old top " + oldTop[i]);
+                System.out.println("TOp je " + top[i]);
+                increase[i] = oldTop[i] - top[i];
+            }
+            if (increase[i] < 0) {
                 increase[i] = 0;
             }
-            System.out.println("Increase of stack " + i + " is: " + increase[i]);
-            totalSpaceUsed += top[i] - base[i];
-
+            System.out.println("Increase of stack " + i + " is " + increase[i]);
             totalIncrease += increase[i];
         }
         p70 = totalSpaceUsed >= (0.7 * tableMax);
         System.out.println("Total increase is : " + totalIncrease);
         System.out.println("Table max " + tableMax + " table base " + tableBase + " totalSpaceUSed " + totalSpaceUsed);
-
         REM = (tableMax - tableBase) - totalSpaceUsed;
         System.out.println("REM is: " + REM);
 
@@ -114,14 +119,14 @@ public class GarwickAlgorithm {
                 } else {
                     totIncreaseZero = (double) increase[i] * ro * 0.9 / totalIncrease;
                 }
-                if (totalSpaceUsed == 0) {//16
+                if (totalSpaceUsed == 0) {
                     totSpaseZero = 0;
                 } else {
-                    totSpaseZero = stack[i] * (1.0 - ro) * 0.9 / (double) totalSpaceUsed; //0.084375
+                    totSpaseZero = stack[i] * (1.0 - ro) * 0.9 / (double) totalSpaceUsed;
                 }
                 alloc[i] = REM * ((0.1 * (1.0 / N)) + totIncreaseZero + totSpaseZero);
+                System.out.println("aloc of " + i + " is " + alloc[i]);
             }
-
             double check = 0;
             for (double val : alloc) {
                 check += val;
@@ -136,24 +141,29 @@ public class GarwickAlgorithm {
                     double curFractPartI = alloc[i] - delta[i];
                     delta[i] += Math.floor(currentAllocSum + curFractPartI);
                     currentAllocSum += curFractPartI;
-                    System.out.println("Delta " + i + " i is " + delta[i]);
                     deltasum += delta[i];
                 }
                 delta[N - 1] = REM - deltasum;
-                System.out.println("Delta n is: " + delta[N - 1]);
                 newBase[0] = base[0];
-                System.out.println("base of 0 is: " + newBase[0]);
+                System.out.println("Base 0 is: " + newBase[0]);
                 for (int i = 1; i < N; i++) {
-                    newBase[i] = newBase[i - 1] + stack[i - 1] + delta[i - 1];
-                    System.out.println("base od " + i + " is: " + newBase[i]);
+                    if (i % 2 != 0) { //starting from 0000000000
+                        newBase[i] = newBase[i - 1] + stack[i - 1] + delta[i - 1] + stack[i] + delta[i];
+                        newBase[i + 1] = newBase[i]; //they have the same base 
+                        System.out.println("Base " + i + " is now: " + newBase[i]);
+                        System.out.println("Base " + (i + 1) + " is now: " + newBase[i + 1]);
+                    }
                 }
             }
             moving();
-            top[K]++;
-            System.out.println("BROJ POMERAJA " + noMovements);
+            if (K % 2 == 0) {
+                top[K]++;
+            } else {
+                top[K]--;
+            }
             for (int i = 0; i < N; i++) {
                 oldTop[i] = top[i];
-                System.out.println("A top je sada " + top[i]);
+                System.out.println("New top is: " + top[i]);
             }
         }
     }
@@ -161,26 +171,40 @@ public class GarwickAlgorithm {
     public static void moving() {
         newBase[N] = base[N];
         System.out.println("New base od n je sada " + newBase[N]);
-        top[K]--;
-        System.out.println("Top od K je sada " + top[K]);
-        //Set i to 2.*/
+        if (K % 2 == 0) {
+            top[K]--;
+        } else {
+            top[K]++;
+        }
+        System.out.println("Top of" + K + "is now " + top[K]);
         for (int i = 1; i < N + 1; i++) {//While i < N 
-            System.out.println("POCINJE POMERANJE--" + i + " nova baza je " + newBase[i] + " a stara je " + base[i]);
             if (newBase[i] < base[i]) {
-                System.out.println("U levo");
-                System.out.println("Nova baza je manja" + newBase[i]);
+                System.out.println("Left");
                 int moveAmount = base[i] - newBase[i];
-                System.out.println("Treba pomeriti bazu i=" + i + " za move " + moveAmount);
-                for (int h = base[i] + 1; h <= top[i]; h++) {
-                    noMovements++;
-                    if (!p70) {
-                        noMovements70++;
+                System.out.println("Base i=" + i + " should be moved by " + moveAmount);
+                if (i % 2 == 0) {
+                    System.out.println("Odd, to the left");
+                    for (int h = base[i] + 1; h <= top[i]; h++) {
+                        noMovements++;
+                        if (!p70) {
+                            noMovements70++;
+                        }
+                    }
+                } else {
+                    System.out.println("Even, to the left");
+                    for (int h = top[i]; h <= base[i]; h++) {
+                        noMovements++;
+                        if (!p70) {
+                            noMovements70++;
+                        }
                     }
                 }
+
                 base[i] = newBase[i];
                 top[i] = top[i] - moveAmount;
-                System.out.println("After the movement base of" + i + " is: " + base[i] + " , and top is: " + top[i]);
+                System.out.println("Base after the movement " + base[i] + " , and top " + top[i]);
             } else if (newBase[i] > base[i]) {
+                System.out.println("Right");
                 int j = N;
                 for (int k = i; k <= N; k++) {
                     if (newBase[k] <= base[k]) {
@@ -190,20 +214,28 @@ public class GarwickAlgorithm {
                 }
                 for (int t = j - 1; t >= i; t--) {
                     int moveAmount = newBase[t] - base[t];
-                    for (int h = top[t]; h >= base[t] + 1; h--) {
-                        noMovements++;
-                        if (!p70) {
-                            noMovements70++;
+                    if (t % 2 == 0) {//odd stack, starting from 0
+                        for (int h = top[t]; h >= base[t] + 1; h--) {
+                            noMovements++;
+                            if (!p70) {
+                                noMovements70++;
+                            }
+                        }
+                    } else {//even stack
+                        for (int h = base[t]; h >= top[t]; h--) {
+                            noMovements++;
+                            if (!p70) {
+                                noMovements70++;
+                            }
                         }
                     }
                     base[t] = newBase[t];
                     top[t] = top[t] + moveAmount;
-
+                    System.out.println("New base is " + base[t] + ", and new top is " + top[t] + ", for t = " + t);
                 }
                 i = j - 1;
             } else {
-
-                System.out.println("Bases are the same");
+                System.out.println("Iste su baze");
             }
         }
     }
@@ -229,65 +261,66 @@ public class GarwickAlgorithm {
     }
 
     public static void main(String[] args) {
-        int sumOfOverflows = 0;
-        int sumOfMovements = 0;
-        int sumOfMovements70 = 0;
-        for (int uk = 0; uk < 10; uk++) {
-            int numberOfOverflows = 0;
-            int inputSize = 50;// can be 1, 20 or 50 for this data
+        int numberOfOverflows = 0;
+        int[] inputs = new int[]{0, 0, 0, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 1, 0, 1, 1, 1, 1};
+        initialize(21, 3, 0.5);//0,0.5,1
+        for (int i = 0; i < 3; i++) {
+            System.out.println("For stack i=" + i + " base is " + base[i] + " and top is " + top[i]);
+            System.out.println("New base is " + newBase[i] + " and old top is " + oldTop[i]);
+        }
+        System.out.println("STAARTIIIING");
+        System.out.println("REM is " + REM);
+        try {
+            for (int m = 0; m < inputs.length; m++) {
+                K = inputs[m];
 
-            int[] inputArray = new int[1000];
-            initialize(1000, 10, 0);//0,0.5,1
-
-            System.out.println("REM is " + REM);
-            try {
-                while (REM > 0) {
-                    if (uniform) {
-                        K = randomUniform();
-                    } else {
-                        K = randomExp();
-                    }
-                    for (int i = 0; i < inputSize; i++) {
-                        top[K]++;
-                        System.out.println("New top of " + K + " is now " + top[K]);
+                System.out.println("K is " + K);
+                if (K % 2 == 0) {
+                    top[K]++;
+                    boolean overflow = false;
+                    if (K == N - 1) {
                         if (top[K] > base[K + 1]) {
-                            numberOfOverflows++;
-                            System.out.println("DESIO SE OVERFLOOOOOOOOOOOOOOWWWW");
-                            System.out.println("baza je K=" + K);
-                            garwick();
-                            if (nemaDalje) {
-                                break;
-                            }
+                            overflow = true;
+                        }
+                    } else {
+                        if (top[K] >= top[K + 1]) {
+                            overflow = true;
                         }
                     }
-                    if (REM <= 0) {
-                        break;
+                    if (overflow) {
+                        numberOfOverflows++;
+                        System.out.println("OVERFLOW");
+                        System.out.println("K=" + K);
+                        garwick();
+                        if (REM == 0) {
+                            break;
+                        }
+                    }
+                } else {
+                    top[K]--;
+                    if (top[K] <= top[K - 1]) {
+                        numberOfOverflows++;
+                        System.out.println("OVERFOW");
+                        System.out.println("K=" + K);
+                        garwick();
+                        if (REM == 0) {
+                            break;
+                        }
                     }
                 }
-                System.out.println("Number of movement 70 is: " + noMovements70);
-                System.out.println("Number of movement is: " + noMovements);
-                System.out.println("Number of overflows is: " + numberOfOverflows);
-
-            } catch (Exception e) {
-                Logger.getLogger(GarwickAlgorithm.class.getName()).log(Level.SEVERE, null, e);
-                System.err.println(e.getMessage());
+                for (int i = 0; i < 3; i++) {
+                    System.out.println("For stack i=" + i + ", base is: " + base[i] + ", and top is: " + top[i]);
+                }
             }
-            System.out.println("Number of movement 70 is: " + noMovements70);
-            System.out.println("Number of movement is: " + noMovements);
             System.out.println("Number of overflows is: " + numberOfOverflows);
-            sumOfMovements += noMovements;
-            sumOfMovements70 += noMovements70;
-            sumOfOverflows += numberOfOverflows;
-
+            System.out.println("Number of movement is: " + noMovements);
+            System.out.println("Number of movement 70 is: " + noMovements70);
+            for (int i = 0; i < 3; i++) {
+                System.out.println("*For stack i=" + i + ", base is: " + base[i] + ", and top is: " + top[i]);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(ModifiedHandSimulation.class.getName()).log(Level.SEVERE, null, e);
+            System.err.println(e.getMessage());
         }
-
-        double averageMove = sumOfMovements / 10.0;
-        double averageMove70 = sumOfMovements70 / 10.0;
-        double averageOver = sumOfOverflows / 10.0;
-        System.out.println("Average movements 70: \t" + averageMove70);
-        System.out.println("Average movements: \t" + averageMove);
-        System.out.println("Average overflows: \t" + averageOver);
     }
-    static boolean uniform = false;
-
 }

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  *
  * @author Djordje Gligorijevic
  */
-public class GarwickAlgorithm {
+public class HandSimulation {
 
     /**
      * Global variables
@@ -229,65 +229,39 @@ public class GarwickAlgorithm {
     }
 
     public static void main(String[] args) {
-        int sumOfOverflows = 0;
-        int sumOfMovements = 0;
-        int sumOfMovements70 = 0;
-        for (int uk = 0; uk < 10; uk++) {
-            int numberOfOverflows = 0;
-            int inputSize = 50;// can be 1, 20 or 50 for this data
-
-            int[] inputArray = new int[1000];
-            initialize(1000, 10, 0);//0,0.5,1
-
-            System.out.println("REM is " + REM);
-            try {
-                while (REM > 0) {
-                    if (uniform) {
-                        K = randomUniform();
-                    } else {
-                        K = randomExp();
-                    }
-                    for (int i = 0; i < inputSize; i++) {
-                        top[K]++;
-                        System.out.println("New top of " + K + " is now " + top[K]);
-                        if (top[K] > base[K + 1]) {
-                            numberOfOverflows++;
-                            System.out.println("DESIO SE OVERFLOOOOOOOOOOOOOOWWWW");
-                            System.out.println("baza je K=" + K);
-                            garwick();
-                            if (nemaDalje) {
-                                break;
-                            }
-                        }
-                    }
-                    if (REM <= 0) {
+        int numberOfOverflows = 0;
+        int[] inputs = new int[]{0, 0, 0, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 1, 0, 1, 1, 1, 1};
+        initialize(21, 3, 0.5);//0,0.5,1
+        try {
+            for (int m = 0; m < inputs.length; m++) {
+                K = inputs[m];
+                System.out.println("K is " + K);
+                top[K]++;
+                System.out.println("New top of " + K + " is now " + top[K]);
+                if (top[K] > base[K + 1]) {
+                    numberOfOverflows++;
+                    System.out.println("OVERFLOW");
+                    System.out.println("K=" + K);
+                    garwick();
+                    if (nemaDalje) {
                         break;
                     }
                 }
-                System.out.println("Number of movement 70 is: " + noMovements70);
-                System.out.println("Number of movement is: " + noMovements);
-                System.out.println("Number of overflows is: " + numberOfOverflows);
-
-            } catch (Exception e) {
-                Logger.getLogger(GarwickAlgorithm.class.getName()).log(Level.SEVERE, null, e);
-                System.err.println(e.getMessage());
+                System.out.println("----For stack i=" + K + " base is " + base[K] + " and top is " + top[K]);
+                for (int i = 0; i < 3; i++) {
+                    System.out.println("For stack i=" + i + " base is " + base[i] + " and top is " + top[i]);
+                }
             }
-            System.out.println("Number of movement 70 is: " + noMovements70);
-            System.out.println("Number of movement is: " + noMovements);
             System.out.println("Number of overflows is: " + numberOfOverflows);
-            sumOfMovements += noMovements;
-            sumOfMovements70 += noMovements70;
-            sumOfOverflows += numberOfOverflows;
+            System.out.println("Number of movement is: " + noMovements);
+            System.out.println("Number of movement 70 is: " + noMovements70);
 
+            for (int i = 0; i < 3; i++) {
+                System.out.println("For stack i=" + i + " base is: " + base[i] + ", and top is: " + top[i]);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(GarwickAlgorithm.class.getName()).log(Level.SEVERE, null, e);
+            System.err.println(e.getMessage());
         }
-
-        double averageMove = sumOfMovements / 10.0;
-        double averageMove70 = sumOfMovements70 / 10.0;
-        double averageOver = sumOfOverflows / 10.0;
-        System.out.println("Average movements 70: \t" + averageMove70);
-        System.out.println("Average movements: \t" + averageMove);
-        System.out.println("Average overflows: \t" + averageOver);
     }
-    static boolean uniform = false;
-
 }
