@@ -10,6 +10,7 @@ package partone;
  * @author gligo_000
  */
 public class BinaryTreeNode {
+
     private int info;
     private BinaryTreeNode leftTree;
     private BinaryTreeNode rightTree;
@@ -64,6 +65,27 @@ public class BinaryTreeNode {
     public void setRightTree(BinaryTreeNode rightTree) {
         this.rightTree = rightTree;
     }
-    
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null) {
+            return this.info == ((BinaryTreeNode) obj).getInfo();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (getLeftTree() != null && getRightTree() != null) {
+            return getInfo() + " " + getLeftTree().getInfo() + " " + getRightTree().getInfo();
+        } else if (getLeftTree() != null && getRightTree() == null) {
+            return getInfo() + " " + getLeftTree().getInfo() + " x";
+        } else if (getLeftTree() == null && getRightTree() != null) {
+            return getInfo() + " x " + getRightTree().getInfo();
+        } else {
+            return getInfo() + " x x";
+        }
+    }
+
 }
