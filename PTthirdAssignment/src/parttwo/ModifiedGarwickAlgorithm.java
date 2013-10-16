@@ -40,7 +40,8 @@ public class ModifiedGarwickAlgorithm {
 
     static boolean nemaDalje = false;
 
-    public static void initialize(int nOFMemoryLocations, int nOfStacks, double roin) {
+    public static void initialize
+            (int nOFMemoryLocations, int nOfStacks, double roin) {
         ro = roin;
         tableMax = nOFMemoryLocations;
         tableBase = 0;
@@ -87,7 +88,8 @@ public class ModifiedGarwickAlgorithm {
                 stack[i] = 0;
             }
             System.out.println("Stack " + i + " has length of: " + stack[i]);
-            System.out.println("TOP is " + top[i] + " ,and his base is: " + base[i]);
+            System.out.println
+                    ("TOP is " + top[i] + " ,and his base is: " + base[i]);
             totalSpaceUsed += stack[i];
             if (i % 2 == 0) {// starting from 0
                 increase[i] = top[i] - oldTop[i];
@@ -104,7 +106,9 @@ public class ModifiedGarwickAlgorithm {
         }
         p70 = totalSpaceUsed >= (0.7 * tableMax);
         System.out.println("Total increase is : " + totalIncrease);
-        System.out.println("Table max " + tableMax + " table base " + tableBase + " totalSpaceUSed " + totalSpaceUsed);
+        System.out.println
+                ("Table max " + tableMax + " table base " + 
+                tableBase + " totalSpaceUSed " + totalSpaceUsed);
         REM = (tableMax - tableBase) - totalSpaceUsed;
         System.out.println("REM is: " + REM);
 
@@ -117,14 +121,17 @@ public class ModifiedGarwickAlgorithm {
                 if (totalIncrease == 0) {
                     totIncreaseZero = 0;
                 } else {
-                    totIncreaseZero = (double) increase[i] * ro * 0.9 / totalIncrease;
+                    totIncreaseZero = 
+                            (double) increase[i] * ro * 0.9 / totalIncrease;
                 }
                 if (totalSpaceUsed == 0) {
                     totSpaseZero = 0;
                 } else {
-                    totSpaseZero = stack[i] * (1.0 - ro) * 0.9 / (double) totalSpaceUsed;
+                    totSpaseZero = 
+                         stack[i] * (1.0 - ro) * 0.9 / (double) totalSpaceUsed;
                 }
-                alloc[i] = REM * ((0.1 * (1.0 / N)) + totIncreaseZero + totSpaseZero);
+                alloc[i] = 
+                    REM * ((0.1 * (1.0 / N)) + totIncreaseZero + totSpaseZero);
                 System.out.println("aloc of " + i + " is " + alloc[i]);
             }
             double check = 0;
@@ -148,10 +155,13 @@ public class ModifiedGarwickAlgorithm {
                 System.out.println("Base 0 is: " + newBase[0]);
                 for (int i = 1; i < N; i++) {
                     if (i % 2 != 0) { //starting from 0000000000
-                        newBase[i] = newBase[i - 1] + stack[i - 1] + delta[i - 1] + stack[i] + delta[i];
+                        newBase[i] = newBase[i - 1] + stack[i - 1] + 
+                                delta[i - 1] + stack[i] + delta[i];
                         newBase[i + 1] = newBase[i]; //they have the same base 
-                        System.out.println("Base " + i + " is now: " + newBase[i]);
-                        System.out.println("Base " + (i + 1) + " is now: " + newBase[i + 1]);
+                        System.out.println("Base " + i + " is now: " + 
+                                newBase[i]);
+                        System.out.println("Base " + (i + 1) + " is now: " + 
+                                newBase[i + 1]);
                     }
                 }
             }
@@ -181,7 +191,8 @@ public class ModifiedGarwickAlgorithm {
             if (newBase[i] < base[i]) {
                 System.out.println("Left");
                 int moveAmount = base[i] - newBase[i];
-                System.out.println("Base i=" + i + " should be moved by " + moveAmount);
+                System.out.println
+                        ("Base i=" + i + " should be moved by " + moveAmount);
                 if (i % 2 == 0) {
                     System.out.println("Odd, to the left");
                     for (int h = base[i] + 1; h <= top[i]; h++) {
@@ -202,7 +213,8 @@ public class ModifiedGarwickAlgorithm {
 
                 base[i] = newBase[i];
                 top[i] = top[i] - moveAmount;
-                System.out.println("Base after the movement " + base[i] + " , and top " + top[i]);
+                System.out.println("Base after the movement " + base[i] +
+                        " , and top " + top[i]);
             } else if (newBase[i] > base[i]) {
                 System.out.println("Right");
                 int j = N;
@@ -231,7 +243,8 @@ public class ModifiedGarwickAlgorithm {
                     }
                     base[t] = newBase[t];
                     top[t] = top[t] + moveAmount;
-                    System.out.println("New base is " + base[t] + ", and new top is " + top[t] + ", for t = " + t);
+                    System.out.println("New base is " + base[t] +
+                            ", and new top is " + top[t] + ", for t = " + t);
                 }
                 i = j - 1;
             } else {
@@ -322,12 +335,17 @@ public class ModifiedGarwickAlgorithm {
                         break;
                     }
                 }
-                System.out.println("Number of overflows is: " + numberOfOverflows);
-                System.out.println("Number of movement is: " + noMovements);
-                System.out.println("Number of movement 70 is: " + noMovements70);
+                System.out.println
+                        ("Number of overflows is: " + numberOfOverflows);
+                System.out.println
+                        ("Number of movement is: " + noMovements);
+                System.out.println
+                        ("Number of movement 70 is: " + noMovements70);
 
             } catch (Exception e) {
-                Logger.getLogger(ModifiedGarwickAlgorithm.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger
+                        (ModifiedGarwickAlgorithm.class.getName()).log
+                        (Level.SEVERE, null, e);
 
                 System.err.println(e.getMessage());
             }

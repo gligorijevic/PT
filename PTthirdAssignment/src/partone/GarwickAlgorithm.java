@@ -40,7 +40,8 @@ public class GarwickAlgorithm {
 
     static boolean nemaDalje = false;
 
-    public static void initialize(int nOFMemoryLocations, int nOfStacks, double roin) {
+    public static void initialize
+            (int nOFMemoryLocations, int nOfStacks, double roin) {
         ro = roin;
         tableMax = nOFMemoryLocations;
         tableBase = 0;
@@ -91,14 +92,16 @@ public class GarwickAlgorithm {
             } else {
                 increase[i] = 0;
             }
-            System.out.println("Increase of stack " + i + " is: " + increase[i]);
+            System.out.println
+                    ("Increase of stack " + i + " is: " + increase[i]);
             totalSpaceUsed += top[i] - base[i];
 
             totalIncrease += increase[i];
         }
         p70 = totalSpaceUsed >= (0.7 * tableMax);
         System.out.println("Total increase is : " + totalIncrease);
-        System.out.println("Table max " + tableMax + " table base " + tableBase + " totalSpaceUSed " + totalSpaceUsed);
+        System.out.println("Table max " + tableMax + " table base " + 
+                tableBase + " totalSpaceUSed " + totalSpaceUsed);
 
         REM = (tableMax - tableBase) - totalSpaceUsed;
         System.out.println("REM is: " + REM);
@@ -112,14 +115,17 @@ public class GarwickAlgorithm {
                 if (totalIncrease == 0) {
                     totIncreaseZero = 0;
                 } else {
-                    totIncreaseZero = (double) increase[i] * ro * 0.9 / totalIncrease;
+                    totIncreaseZero = 
+                            (double) increase[i] * ro * 0.9 / totalIncrease;
                 }
                 if (totalSpaceUsed == 0) {//16
                     totSpaseZero = 0;
                 } else {
-                    totSpaseZero = stack[i] * (1.0 - ro) * 0.9 / (double) totalSpaceUsed; //0.084375
+                    totSpaseZero = 
+                         stack[i] * (1.0 - ro) * 0.9 / (double) totalSpaceUsed;
                 }
-                alloc[i] = REM * ((0.1 * (1.0 / N)) + totIncreaseZero + totSpaseZero);
+                alloc[i] = 
+                    REM * ((0.1 * (1.0 / N)) + totIncreaseZero + totSpaseZero);
             }
 
             double check = 0;
@@ -165,12 +171,15 @@ public class GarwickAlgorithm {
         System.out.println("Top od K je sada " + top[K]);
         //Set i to 2.*/
         for (int i = 1; i < N + 1; i++) {//While i < N 
-            System.out.println("POCINJE POMERANJE--" + i + " nova baza je " + newBase[i] + " a stara je " + base[i]);
+            System.out.println
+                    ("POCINJE POMERANJE--" + i + " nova baza je " + 
+                    newBase[i] + " a stara je " + base[i]);
             if (newBase[i] < base[i]) {
                 System.out.println("U levo");
                 System.out.println("Nova baza je manja" + newBase[i]);
                 int moveAmount = base[i] - newBase[i];
-                System.out.println("Treba pomeriti bazu i=" + i + " za move " + moveAmount);
+                System.out.println
+                     ("Treba pomeriti bazu i=" + i + " za move " + moveAmount);
                 for (int h = base[i] + 1; h <= top[i]; h++) {
                     noMovements++;
                     if (!p70) {
@@ -179,7 +188,9 @@ public class GarwickAlgorithm {
                 }
                 base[i] = newBase[i];
                 top[i] = top[i] - moveAmount;
-                System.out.println("After the movement base of" + i + " is: " + base[i] + " , and top is: " + top[i]);
+                System.out.println
+                        ("After the movement base of" + i + " is: " + 
+                        base[i] + " , and top is: " + top[i]);
             } else if (newBase[i] > base[i]) {
                 int j = N;
                 for (int k = i; k <= N; k++) {
