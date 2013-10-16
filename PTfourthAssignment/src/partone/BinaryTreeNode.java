@@ -18,7 +18,8 @@ public class BinaryTreeNode {
     public BinaryTreeNode() {
     }
 
-    public BinaryTreeNode(int info, BinaryTreeNode leftTree, BinaryTreeNode rightTree) {
+    public BinaryTreeNode
+            (int info, BinaryTreeNode leftTree, BinaryTreeNode rightTree) {
         this.info = info;
         this.leftTree = leftTree;
         this.rightTree = rightTree;
@@ -78,7 +79,8 @@ public class BinaryTreeNode {
     @Override
     public String toString() {
         if (getLeftTree() != null && getRightTree() != null) {
-            return getInfo() + " " + getLeftTree().getInfo() + " " + getRightTree().getInfo();
+            return getInfo() + " " + getLeftTree().getInfo() + 
+                    " " + getRightTree().getInfo();
         } else if (getLeftTree() != null && getRightTree() == null) {
             return getInfo() + " " + getLeftTree().getInfo() + " x";
         } else if (getLeftTree() == null && getRightTree() != null) {

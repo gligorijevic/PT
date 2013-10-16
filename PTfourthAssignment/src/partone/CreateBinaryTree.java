@@ -347,9 +347,12 @@ public class CreateBinaryTree {
         //traversal
         top = -1;
         modifiedRobsonTraversal();
-        System.out.println("###################################################################");
-        System.out.println("###########Preorder traversal after Modified Robson################");
-        System.out.println("###################################################################");
+        System.out.println("###########################"
+                + "########################################");
+        System.out.println("###########Preorder traversal "
+                + "after Modified Robson################");
+        System.out.println("################################"
+                + "###################################");
         preorder();
 
     }
