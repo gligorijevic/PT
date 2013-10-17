@@ -302,8 +302,45 @@ public class CreateBinaryTree {
         }
 
         System.out.println("***PREVIOUS: ");
+        BinaryTreeNode temp1 = predp;
         if (predp != null) {
             System.out.println(predp);
+            while (!temp1.equals(t)) {
+                if (temp1.getRightTree() != null && temp1.getLeftTree() == null) {
+                    temp1 = temp1.getRightTree();
+                } else if (temp1.getRightTree() == null && temp1.getLeftTree() != null) {
+                    temp1 = temp1.getLeftTree();
+                } else {
+                    if (temp1.equals(topRobson)) {
+                        temp1 = temp1.getRightTree();
+                    } else {
+                        if (stackRobson != null) {
+                            if (temp1.equals(stackRobson.getRightTree())) {
+                                temp1 = temp1.getRightTree();
+                            } else if (!temp1.equals(t) && !temp1.equals(stackRobson.getRightTree())) {
+                                temp1 = temp1.getLeftTree().getRightTree();
+                            }
+                        }else{
+                            temp1 = temp1.getLeftTree();
+                        }
+                    }
+                }
+                System.out.println(temp1);
+
+//                System.out.println(temp1);
+//                if (temp1.getInfo() > temp1.getLeftTree().getInfo()) {
+//                    temp1 = temp1.getRightTree();
+//                } else if (temp1.getInfo() < temp1.getLeftTree().getInfo()) {
+//                    temp1 = temp1.getLeftTree();
+//                } else {
+//                    break;
+//                }
+//                if (temp1 != null && temp1.getLeftTree() != null) {
+//                    temp1 = temp1.getLeftTree();
+//                    temp1 = temp1.getRightTree();
+//                }
+            }
+
         } else {
             System.out.println("NULL");
         }
@@ -337,6 +374,8 @@ public class CreateBinaryTree {
 
         lefts = new int[]{1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0};
         rights = new int[]{1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0};
+//        lefts = new int[]{0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0};
+//        rights = new int[]{1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0};
 
 //        lefts = new int[]{0};
 //        rights = new int[]{0};
