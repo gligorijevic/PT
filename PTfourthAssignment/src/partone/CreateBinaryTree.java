@@ -114,6 +114,9 @@ public class CreateBinaryTree {
      */
     static void preorder() {
         p = t;
+        s = new BinaryTreeNode[lefts.length];
+        top=-1;i=0;                BinaryTreeNode q = null;
+                BinaryTreeNode rtprt = null;
 
         while (p != null || top != -1) {
             if (p != null) {
@@ -125,13 +128,14 @@ public class CreateBinaryTree {
                     p = p.getRightTree();
                 }
             } else {
-                BinaryTreeNode q = null;
-                BinaryTreeNode rtprt = null;
+
                 do {
                     q = s[top--];
 
                     if (top != -1) {
                         rtprt = s[top].getRightTree();
+                    }else{
+                        rtprt=null;
                     }
                 } while (s != null && q.equals(rtprt));
                 p = rtprt;
@@ -212,7 +216,7 @@ public class CreateBinaryTree {
                 avail = p;
 
                 if (t.equals(p)) {
-                    return;
+                    break;
                 } else {
                     while (!p.equals(t)) {
                         if (predp.getRightTree() == null) { //coming from left
@@ -258,8 +262,10 @@ public class CreateBinaryTree {
                         } else {
                             avail.setLeftTree(stackRobson); //for the most 
                             //recent available point it's left link to the 
-                            //stack avail.setRightTree(topRobson); 
+                            //stack 
+                            avail.setRightTree(topRobson); 
                             //and it's right link to the top
+                   
                             stackRobson = avail; //now store it to the 
                             //stack so that next time you find an 
                             //available node you can store it to avail
@@ -301,50 +307,6 @@ public class CreateBinaryTree {
             System.out.println("NULL");
         }
 
-        System.out.println("***PREVIOUS: ");
-        BinaryTreeNode temp1 = predp;
-        if (predp != null) {
-            System.out.println(predp);
-            while (!temp1.equals(t)) {
-                if (temp1.getRightTree() != null && temp1.getLeftTree() == null) {
-                    temp1 = temp1.getRightTree();
-                } else if (temp1.getRightTree() == null && temp1.getLeftTree() != null) {
-                    temp1 = temp1.getLeftTree();
-                } else {
-                    if (temp1.equals(topRobson)) {
-                        temp1 = temp1.getRightTree();
-                    } else {
-                        if (stackRobson != null) {
-                            if (temp1.equals(stackRobson.getRightTree())) {
-                                temp1 = temp1.getRightTree();
-                            } else if (!temp1.equals(t) && !temp1.equals(stackRobson.getRightTree())) {
-                                temp1 = temp1.getLeftTree().getRightTree();
-                            }
-                        }else{
-                            temp1 = temp1.getLeftTree();
-                        }
-                    }
-                }
-                System.out.println(temp1);
-
-//                System.out.println(temp1);
-//                if (temp1.getInfo() > temp1.getLeftTree().getInfo()) {
-//                    temp1 = temp1.getRightTree();
-//                } else if (temp1.getInfo() < temp1.getLeftTree().getInfo()) {
-//                    temp1 = temp1.getLeftTree();
-//                } else {
-//                    break;
-//                }
-//                if (temp1 != null && temp1.getLeftTree() != null) {
-//                    temp1 = temp1.getLeftTree();
-//                    temp1 = temp1.getRightTree();
-//                }
-            }
-
-        } else {
-            System.out.println("NULL");
-        }
-
         BinaryTreeNode temp = stackRobson;
         System.out.println("***STACK POINTERS");
         if (stackRobson == null) {
@@ -365,6 +327,50 @@ public class CreateBinaryTree {
             }
             temp = temp.getLeftTree();
         }
+        
+        System.out.println("***PREVIOUS: ");
+        BinaryTreeNode temp1 = predp;
+        if (predp != null) {
+            System.out.println(predp);
+            while (!temp1.equals(t)) {
+                if (temp1.getRightTree() != null && temp1.getLeftTree() == null) {
+                    temp1 = temp1.getRightTree();
+                } else if (temp1.getRightTree() == null && temp1.getLeftTree() != null) {
+                    temp1 = temp1.getLeftTree();
+                } else { //it has both children
+                    if (temp1.equals(topRobson)) {
+                        temp1 = temp1.getRightTree();//u pitanju je top
+                    } else {
+                        if (stackRobson != null) {
+                            BinaryTreeNode iter = stackRobson;
+                            boolean nasao = false;
+                            while (iter != null) {
+                                if (iter.getRightTree() != null) {
+                                    if (temp1.equals(iter.getRightTree())) {
+                                        temp1 = temp1.getRightTree();
+                                        nasao = true;break;
+                                    }
+                                }
+                                iter = iter.getLeftTree();
+
+                            }
+                            if (!nasao) {
+                                temp1 = temp1.getLeftTree();
+                            }
+                        } else {
+                            temp1 = temp1.getLeftTree();
+                        }
+                    }
+                }
+                System.out.println(temp1);
+
+            }
+
+        } else {
+            System.out.println("---NULL");
+        }
+
+        
     }
 
     public static void main(String[] args) {
@@ -372,10 +378,10 @@ public class CreateBinaryTree {
 //        lefts = new int[]{1, 1, 0, 0, 0};
 //        rights = new int[]{1, 0, 0, 1, 0};
 
-        lefts = new int[]{1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0};
-        rights = new int[]{1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0};
-//        lefts = new int[]{0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0};
-//        rights = new int[]{1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0};
+//        lefts = new int[]{1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0};
+//        rights = new int[]{1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0};
+        lefts = new int[]{0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0};
+        rights = new int[]{1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0};
 
 //        lefts = new int[]{0};
 //        rights = new int[]{0};
@@ -385,6 +391,8 @@ public class CreateBinaryTree {
 
         //traversal
         top = -1;
+        preorder();
+
         modifiedRobsonTraversal();
         System.out.println("###########################"
                 + "########################################");

@@ -67,13 +67,20 @@ public class BinaryTreeNode {
         this.rightTree = rightTree;
     }
 
+
     @Override
     public boolean equals(Object obj) {
-        if (obj != null) {
-            return this.info == ((BinaryTreeNode) obj).getInfo();
-        } else {
+        if (obj == null) {
             return false;
         }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BinaryTreeNode other = (BinaryTreeNode) obj;
+        if (this.info != other.info) {
+            return false;
+        }
+        return true;
     }
 
     @Override
