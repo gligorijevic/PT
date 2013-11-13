@@ -155,7 +155,7 @@ public class ParenthesisAndBinaryTreesBonus {
         int nodeNumber = 1;
         char arrayToFillNext = 'L';
         if (inputArray[0] == 0) {
-            System.out.println("This is an emty tree.");
+            System.out.println("This is an empty tree.");
             rootOfTree = 0;
         } else if (inputArray[0] == 1) {
             rootOfTree = 1;
