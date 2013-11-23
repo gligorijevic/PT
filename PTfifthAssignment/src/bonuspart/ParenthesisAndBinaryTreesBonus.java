@@ -198,8 +198,9 @@ public class ParenthesisAndBinaryTreesBonus {
 //        n = 5;
 //        int[] inputarray={1, 1, 0, 1, 0, 0, 1, 0}; n=4;
 //        int[] inputarray={1,0,1,0,1,0,1,0,1,0}; n=5;
-        int[] inputarray = {1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0};
-        n = 13;
+//        int[] inputarray = {1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0};
+        int[] inputarray = {1,0,1,0,1,1,0,1,1,0,0,1,1,0,1,1,0,0,1,0,0,0};
+        n = 11;
 
         t = new BinaryTreeNode();
         tree_input = inputarray;

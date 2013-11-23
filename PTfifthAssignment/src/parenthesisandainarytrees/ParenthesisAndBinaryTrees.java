@@ -83,15 +83,15 @@ public class ParenthesisAndBinaryTrees {
         double a;
         char f;
 
-        n = 4;
-//        for (i = 1; i <= n - 1; i++) {
-//            lefts[i] = 0;
-//            rights[i] = i + 1;
-//        }
+        n = 5;
+        for (i = 1; i <= n - 1; i++) {
+            lefts[i] = 0;
+            rights[i] = i + 1;
+        }
 
-        lefts[1] = 2;
-        rights[1] = 4;
-        rights[2] = 3;
+//        lefts[1] = 2;
+//        rights[1] = 4;
+//        rights[2] = 3;
 
         rights[n] = 0;
         lefts[n] = 0;
