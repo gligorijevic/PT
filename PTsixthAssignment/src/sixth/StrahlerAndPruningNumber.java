@@ -121,16 +121,16 @@ public class StrahlerAndPruningNumber {
         strahler = new int[n + 1];
         pruning = new int[n + 1];
 
-//        for (int i = 1; i <= n - 1; i++) {
-//            lefts[i] = 0;
-//            rights[i] = i + 1;
-//        }
-        lefts[1] = 2;
-        rights[1] = 4;
-        rights[2] = 3;
-
-        rights[n] = 0;
-        lefts[n] = 0;
+        for (int i = 1; i <= n - 1; i++) {
+            lefts[i] = 0;
+            rights[i] = i + 1;
+        }
+//        lefts[1] = 2;
+//        rights[1] = 4;
+//        rights[2] = 3;
+//
+//        rights[n] = 0;
+//        lefts[n] = 0;
         insert = 1;
         numberOfTrees = 0;
         print(n);
