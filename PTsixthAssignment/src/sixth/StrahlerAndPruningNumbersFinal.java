@@ -23,6 +23,7 @@ public class StrahlerAndPruningNumbersFinal {
     static int insert;
     static int[] strahler;
     static int[] pruning;
+    static int errorCount = 0;
 
     static void generator() throws IOException {
         int i;
@@ -123,7 +124,10 @@ public class StrahlerAndPruningNumbersFinal {
             } while (next != 0);
             int pruningNumber = getPruningNumber();
             System.out.println("The Pruning no of the tree  is: " + pruningNumber);
-
+            if (strahler[1] != pruningNumber) {
+                System.out.println("################################################################ error ################################################################");
+                errorCount++;
+            }
             out.write(String.valueOf(strahler[1]) + ", " + String.valueOf(pruningNumber) + "\n");
             out.flush();
             clear();
@@ -179,6 +183,7 @@ public class StrahlerAndPruningNumbersFinal {
         int l = 0;
         if (lefts[index] != 0) {
             l = getPruningNumberRecursively(lefts[index]);
+//            index = lefts[index];
             //System.out.println("l="+l);
         }
         int r = 0;
@@ -196,7 +201,7 @@ public class StrahlerAndPruningNumbersFinal {
             }
             //    System.out.println("k="+k);
         }
-        if (allRightSubTreeHaveSamePruningNo && r == l) {
+        if (r == l) {
             return l + 1;
         }
         return r > l ? r : l;
@@ -207,8 +212,13 @@ public class StrahlerAndPruningNumbersFinal {
             return 1;
         }
         int l = 0, r = 0;
-        if (lefts[index] != 0) {
+        if (lefts[index] != 0 && index != 0) {
+
             l = getPruningNumberRecursively(lefts[index]);
+        }
+//                        l = getPruningNumberRecursively(index);
+        if (rights[index] != 0) {
+//            index = lefts[index];
             //    System.out.println("in rec l::"+l+" for index:"+index);
             boolean allRightSubTreeHaveSamePruningNo = true;
 //            index = lefts[index];
@@ -223,12 +233,12 @@ public class StrahlerAndPruningNumbersFinal {
                 }
                 //         System.out.println("in rec k::"+" for index:"+index);
             }
-            if (allRightSubTreeHaveSamePruningNo && r == l) {
+            if (r == l) {
                 return l + 1;
             }
-            return r > l ? r : l;
+//            return r > l ? r : l;
         }
-        return 1;
+            return r > l ? r : l;
     }
 
     private static void print(int n) {
@@ -299,7 +309,7 @@ public class StrahlerAndPruningNumbersFinal {
 //        double a;
 //        char f;
 
-        n = 8;
+        n = 10;
         strahler = new int[n + 1];
         pruning = new int[n + 1];
         lefts = new int[n + 1];
@@ -319,6 +329,10 @@ public class StrahlerAndPruningNumbersFinal {
 //        rights = new int[]{0, 0, 5, 4, 0, 8, 7, 0, 0};
 //        lefts = new int[]{0, 2, 3, 4, 0, 0, 0, 0, 0};
 //        rights = new int[]{0, 0, 0, 0, 5, 6, 7, 0, 0};
+//        lefts = new int[]{0, 2, 3, 4, 5, 0, 7, 0, 0};
+//        rights = new int[]{0, 0, 0, 0, 0, 6, 8, 0, 0};
+//        lefts = new int[]{0, 2, 3, 0, 0, 6, 0 , 0};
+//        rights = new int[]{0, 5, 4, 0, 0, 7,0,0};
 
 //        lefts[1] = 2;
 //        rights[1] = 4;
@@ -369,7 +383,10 @@ public class StrahlerAndPruningNumbersFinal {
         } while (next != 0);
         int pruningNumber = getPruningNumber();
         System.out.println("The Pruning no of the tree  is: " + pruningNumber);
-
+        if (strahler[1] != pruningNumber) {
+            System.out.println("################################ error ##################################");
+            errorCount++;
+        }
         out.write(String.valueOf(strahler[1]) + ", " + String.valueOf(pruningNumber) + "\n");
         out.flush();
         clear();
@@ -383,6 +400,7 @@ public class StrahlerAndPruningNumbersFinal {
         }
         System.out.println("\n________________________________");
         System.out.println("Number of all trees: " + numberOfTrees);
+        System.out.println("Error count is: " + errorCount);
         out.close();
     }
 
