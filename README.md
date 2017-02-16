@@ -1,3 +1,5 @@
+# Programming techniques
+
 Homeworks assignments for the Programming Techniques class. 
 
 They include code for problems such are:
@@ -7,6 +9,3 @@ They include code for problems such are:
 3. Max product sub-sequence,
 4. Robson traversal algorithm for binary trees, 
 5. etc.
-
-#PT
-
